@@ -97,6 +97,85 @@
             </div>
         </div>
 
+        {{-- Project Images --}}
+        <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-semibold text-[var(--admin-text-primary)]">Project Images</h3>
+                @if(count($images) > 0)
+                    <span class="text-xs text-[var(--admin-text-secondary)] bg-[var(--admin-bg-page)] px-2.5 py-1 rounded-lg border border-[var(--admin-border)]">{{ count($images) }} image{{ count($images) > 1 ? 's' : '' }}</span>
+                @endif
+            </div>
+            
+            <div class="space-y-4">
+                {{-- Upload Area --}}
+                <div class="relative">
+                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[var(--admin-border)] rounded-xl cursor-pointer bg-[var(--admin-bg-page)] hover:bg-[var(--admin-hover-bg)] hover:border-[var(--admin-primary)] transition-all duration-300 group">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6" wire:loading.remove wire:target="image_files">
+                            <svg class="w-8 h-8 mb-2 text-[var(--admin-text-secondary)] group-hover:text-[var(--admin-primary)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 16V4m0 0L8 8m4-4l4 4m-12 8l1.292-1.293a2 2 0 012.828 0L12 15l2.88-2.88a2 2 0 012.828 0L20 14.5M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <p class="text-xs text-[var(--admin-text-secondary)]"><span class="font-semibold text-[var(--admin-primary)]">Klik untuk upload</span> atau drag & drop</p>
+                            <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">JPEG, PNG, WebP, AVIF. Max 5MB per image.</p>
+                        </div>
+                        <div wire:loading wire:target="image_files" class="flex flex-col items-center gap-2">
+                            <svg class="w-6 h-6 animate-spin text-[var(--admin-primary)]" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                            <span class="text-xs text-[var(--admin-primary)] font-medium">Uploading images...</span>
+                        </div>
+                        <input wire:model="image_files" type="file" multiple accept="image/*" class="hidden">
+                    </label>
+                </div>
+                @error('image_files.*') <p class="text-xs text-red-600 dark:text-red-400">{{ $message }}</p> @enderror
+
+                {{-- Image Grid with Reorder --}}
+                @if(count($images) > 0)
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-2">
+                        @foreach($images as $index => $img)
+                            <div class="relative group aspect-[4/3] rounded-xl overflow-hidden border border-[var(--admin-border)] bg-[var(--admin-bg-page)] transition-all duration-200 hover:border-[var(--admin-primary)]/50 hover:shadow-lg hover:shadow-[var(--admin-primary)]/5" wire:key="project-image-{{ $index }}">
+                                {{-- Image --}}
+                                <img src="{{ $img }}" alt="Project Image {{ $index + 1 }}" class="w-full h-full object-cover">
+                                
+                                {{-- Order Badge --}}
+                                <div class="absolute top-2 left-2 w-6 h-6 bg-black/60 backdrop-blur-sm text-white rounded-lg flex items-center justify-center text-[10px] font-bold z-10">
+                                    {{ $index + 1 }}
+                                </div>
+
+                                {{-- Hover Overlay with Actions --}}
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-3 gap-1.5">
+                                    {{-- Move Up --}}
+                                    <button type="button" wire:click="moveImageUp({{ $index }})"
+                                        @if($index === 0) disabled @endif
+                                        class="w-8 h-8 bg-white/20 backdrop-blur-sm hover:bg-white/40 disabled:opacity-30 disabled:cursor-not-allowed text-white rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                                        title="Geser ke kiri">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                    </button>
+                                    {{-- Move Down --}}
+                                    <button type="button" wire:click="moveImageDown({{ $index }})"
+                                        @if($index === count($images) - 1) disabled @endif
+                                        class="w-8 h-8 bg-white/20 backdrop-blur-sm hover:bg-white/40 disabled:opacity-30 disabled:cursor-not-allowed text-white rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                                        title="Geser ke kanan">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </button>
+                                    {{-- Remove --}}
+                                    <button type="button" wire:click="removeImage({{ $index }})"
+                                        class="w-8 h-8 bg-red-500/80 backdrop-blur-sm hover:bg-red-500 text-white rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                                        title="Hapus image">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="text-[10px] text-[var(--admin-text-secondary)] mt-2 flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Hover gambar untuk menampilkan tombol aksi. Gunakan panah untuk menggeser posisi urutan.
+                    </p>
+                @endif
+            </div>
+        </div>
+
         {{-- Settings --}}
         <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6">
             <h3 class="text-sm font-semibold text-[var(--admin-text-primary)] mb-4">Settings</h3>

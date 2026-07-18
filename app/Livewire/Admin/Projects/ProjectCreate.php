@@ -23,6 +23,7 @@ class ProjectCreate extends Component
     public $cover_image_file = null;
     public string $cover_image = '';
     public array $images = [];
+    public $image_files = [];
     public bool $is_published = false;
     public bool $is_headliner = false;
     public int $sort_order = 0;
@@ -60,6 +61,46 @@ class ProjectCreate extends Component
 
         $path = $this->cover_image_file->store('uploads/' . date('Y/m'), 'public');
         $this->cover_image = '/storage/' . $path;
+    }
+
+    public function updatedImageFiles(): void
+    {
+        $this->validate([
+            'image_files.*' => 'image|max:5120',
+        ]);
+
+        foreach ($this->image_files as $file) {
+            $path = $file->store('uploads/' . date('Y/m'), 'public');
+            $this->images[] = '/storage/' . $path;
+        }
+
+        $this->image_files = [];
+    }
+
+    public function removeImage($index): void
+    {
+        if (isset($this->images[$index])) {
+            unset($this->images[$index]);
+            $this->images = array_values($this->images);
+        }
+    }
+
+    public function moveImageUp($index): void
+    {
+        if ($index > 0 && isset($this->images[$index])) {
+            $temp = $this->images[$index - 1];
+            $this->images[$index - 1] = $this->images[$index];
+            $this->images[$index] = $temp;
+        }
+    }
+
+    public function moveImageDown($index): void
+    {
+        if ($index < count($this->images) - 1 && isset($this->images[$index])) {
+            $temp = $this->images[$index + 1];
+            $this->images[$index + 1] = $this->images[$index];
+            $this->images[$index] = $temp;
+        }
     }
 
     public function save()
