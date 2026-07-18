@@ -56,7 +56,8 @@
                 <div class="space-y-1">
                     @foreach($items as $item)
                         @php
-                            $isActive = str_starts_with($currentRoute, str_replace('.index', '', $item['route']));
+                            $baseRoute = str_replace('.index', '', $item['route']);
+                            $isActive = $currentRoute === $item['route'] || str_starts_with($currentRoute, $baseRoute . '.');
                         @endphp
                         <a
                             href="{{ route($item['route']) }}"
