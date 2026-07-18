@@ -5,10 +5,17 @@ namespace App\Livewire\Admin\Settings;
 use App\Models\SiteSetting;
 use App\Models\ActivityLog;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class SettingIndex extends Component
 {
+    use WithFileUploads;
+
     public array $settings = [];
+    
+    public $newLogo;
+    public $newFavicon;
 
     public function mount(): void
     {
@@ -21,8 +28,8 @@ class SettingIndex extends Component
             // General
             'site_name' => ['default' => 'Halo Arsitek', 'type' => 'STRING', 'label' => 'Website Name', 'group' => 'General'],
             'site_tagline' => ['default' => 'Jasa Arsitek & Desain Interior Premium', 'type' => 'STRING', 'label' => 'Website Tagline', 'group' => 'General'],
-            'site_logo' => ['default' => '', 'type' => 'STRING', 'label' => 'Logo URL (Optional)', 'group' => 'General'],
-            'site_favicon' => ['default' => '', 'type' => 'STRING', 'label' => 'Favicon URL (Optional)', 'group' => 'General'],
+            'site_logo' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Logo (Optional)', 'group' => 'General'],
+            'site_favicon' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Favicon (Optional)', 'group' => 'General'],
             
             // Hero & About (Company)
             'hero_tagline' => ['default' => 'Menciptakan Ruang, Membangun Cerita', 'type' => 'STRING', 'label' => 'Hero Tagline', 'group' => 'Company'],
@@ -70,11 +77,32 @@ class SettingIndex extends Component
 
     public function save(): void
     {
+        $this->validate([
+            'newLogo' => 'nullable|image|max:2048',
+            'newFavicon' => 'nullable|image|max:1024',
+        ]);
+
+        if ($this->newLogo) {
+            if (!empty($this->settings['site_logo']) && !str_starts_with($this->settings['site_logo'], 'http')) {
+                Storage::disk('public')->delete($this->settings['site_logo']);
+            }
+            $this->settings['site_logo'] = $this->newLogo->store('settings', 'public');
+            $this->newLogo = null;
+        }
+
+        if ($this->newFavicon) {
+            if (!empty($this->settings['site_favicon']) && !str_starts_with($this->settings['site_favicon'], 'http')) {
+                Storage::disk('public')->delete($this->settings['site_favicon']);
+            }
+            $this->settings['site_favicon'] = $this->newFavicon->store('settings', 'public');
+            $this->newFavicon = null;
+        }
+
         $schema = $this->getSettingSchema();
         foreach ($this->settings as $key => $value) {
             $meta = $schema[$key] ?? null;
             if ($meta) {
-                SiteSetting::setValue($key, $value, $meta['type']);
+                SiteSetting::setValue($key, $value, $meta['type'] === 'IMAGE' ? 'STRING' : $meta['type']);
             }
         }
 

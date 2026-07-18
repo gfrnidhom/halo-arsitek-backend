@@ -71,7 +71,41 @@
                         @foreach($items as $key => $meta)
                             <div>
                                 <label class="block text-[11px] font-semibold text-[var(--admin-text-secondary)] uppercase tracking-widest mb-2">{{ $meta['label'] }}</label>
-                                @if(str_contains(strtolower($key), 'description') || str_contains(strtolower($key), 'address') || str_contains(strtolower($key), 'script'))
+                                @if($meta['type'] === 'IMAGE')
+                                    <div class="flex items-center gap-4 mt-2">
+                                        @if($key === 'site_logo')
+                                            <div class="shrink-0">
+                                                @if($newLogo)
+                                                    <img src="{{ $newLogo->temporaryUrl() }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)]">
+                                                @elseif(!empty($settings[$key]))
+                                                    <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)]">
+                                                @else
+                                                    <div class="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] flex items-center justify-center text-[var(--admin-text-secondary)]"><i data-lucide="image" class="w-6 h-6"></i></div>
+                                                @endif
+                                            </div>
+                                            <div class="flex-1">
+                                                <input type="file" wire:model="newLogo" accept="image/*" 
+                                                    class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
+                                                <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 250x80px. Max 2MB.</p>
+                                            </div>
+                                        @elseif($key === 'site_favicon')
+                                            <div class="shrink-0">
+                                                @if($newFavicon)
+                                                    <img src="{{ $newFavicon->temporaryUrl() }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)]">
+                                                @elseif(!empty($settings[$key]))
+                                                    <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)]">
+                                                @else
+                                                    <div class="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] flex items-center justify-center text-[var(--admin-text-secondary)]"><i data-lucide="image" class="w-6 h-6"></i></div>
+                                                @endif
+                                            </div>
+                                            <div class="flex-1">
+                                                <input type="file" wire:model="newFavicon" accept="image/*" 
+                                                    class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
+                                                <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 32x32px or 64x64px. Max 1MB.</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @elseif(str_contains(strtolower($key), 'description') || str_contains(strtolower($key), 'address') || str_contains(strtolower($key), 'script'))
                                     <textarea wire:model="settings.{{ $key }}" rows="4"
                                         class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-3 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)] transition-all resize-y"></textarea>
                                 @else
