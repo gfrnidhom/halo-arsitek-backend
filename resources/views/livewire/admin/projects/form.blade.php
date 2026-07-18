@@ -133,7 +133,7 @@
                 @if(count($images) > 0)
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-2">
                         @foreach($images as $index => $img)
-                            <div class="relative group aspect-[4/3] rounded-xl overflow-hidden border border-[var(--admin-border)] bg-[var(--admin-bg-page)] transition-all duration-200 hover:border-[var(--admin-primary)]/50 hover:shadow-lg hover:shadow-[var(--admin-primary)]/5" wire:key="project-image-{{ $index }}">
+                            <div class="relative group aspect-[4/3] rounded-xl overflow-hidden border border-[var(--admin-border)] bg-[var(--admin-bg-page)] transition-all duration-200 hover:border-[var(--admin-primary)]/50 hover:shadow-sm hover:shadow-[var(--admin-primary)]/5" wire:key="project-image-{{ $index }}">
                                 {{-- Image --}}
                                 <img src="{{ $img }}" alt="Project Image {{ $index + 1 }}" class="w-full h-full object-cover">
                                 

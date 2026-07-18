@@ -103,7 +103,7 @@
     {{-- Delete Modal --}}
     @if($showDeleteModal)
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-sm w-full shadow-sm">
                 <h3 class="text-lg font-semibold text-[var(--admin-text-primary)] mb-1">Delete Article</h3>
                 <p class="text-sm text-[var(--admin-text-secondary)] mb-6">Are you sure you want to delete "<strong class="text-[var(--admin-text-primary)]">{{ $deleteTitle }}</strong>"?</p>
                 <div class="flex gap-3">

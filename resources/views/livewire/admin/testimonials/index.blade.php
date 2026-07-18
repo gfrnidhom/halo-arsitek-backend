@@ -13,7 +13,7 @@
     {{-- Form Modal --}}
     @if($showForm)
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-lg w-full shadow-sm max-h-[90vh] overflow-y-auto">
                 <h3 class="text-lg font-semibold text-[var(--admin-text-primary)] mb-4">{{ $editId ? 'Edit Testimonial' : 'Add Testimonial' }}</h3>
                 
                 <form wire:submit="save" class="space-y-4">
@@ -131,7 +131,7 @@
 
     @if($showDeleteModal)
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-sm w-full shadow-sm">
                 <h3 class="text-lg font-semibold text-[var(--admin-text-primary)] mb-2">Delete Testimonial</h3>
                 <p class="text-sm text-[var(--admin-text-secondary)] mb-6">Are you sure you want to delete this testimonial?</p>
                 <div class="flex gap-3">

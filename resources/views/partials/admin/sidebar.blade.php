@@ -25,7 +25,7 @@
 @endphp
 
 <aside
-    class="admin-sidebar fixed top-0 left-0 z-50 h-screen transition-all duration-300 ease-out flex flex-col shadow-lg border-r border-[var(--admin-border)] bg-[var(--admin-sidebar-bg)]"
+    class="admin-sidebar fixed top-0 left-0 z-50 h-screen transition-all duration-300 ease-out flex flex-col shadow-xs border-r border-[var(--admin-border)] bg-[var(--admin-sidebar-bg)]"
     :style="`width: ${sidebarWidth}px; transform: translateX(${sidebarOpen ? '0' : '-100%'});`"
     x-cloak
 >

@@ -11,7 +11,7 @@
         </div>
 
         {{-- Login Card --}}
-        <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-black/20">
+        <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-8 shadow-sm shadow-slate-200/50 dark:shadow-black/20">
             <h2 class="text-lg font-semibold text-[var(--admin-text-primary)] mb-6 text-center">Masuk ke Dashboard</h2>
 
             <form wire:submit="login" class="space-y-5">
@@ -61,7 +61,7 @@
                 {{-- Submit --}}
                 <button
                     type="submit"
-                    class="w-full bg-[var(--admin-primary)] hover:bg-[var(--admin-primary-hover)] text-white font-medium py-3 px-4 rounded-xl transition-colors duration-200 shadow-md flex items-center justify-center gap-2"
+                    class="w-full bg-[var(--admin-primary)] hover:bg-[var(--admin-primary-hover)] text-white font-medium py-3 px-4 rounded-xl transition-colors duration-200 shadow-xs flex items-center justify-center gap-2"
                     wire:loading.attr="disabled"
                     wire:loading.class="opacity-70 cursor-not-allowed"
                 >

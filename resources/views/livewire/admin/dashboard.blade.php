@@ -11,7 +11,7 @@
         @endphp
 
         @foreach($cards as $card)
-            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 shadow-sm hover:shadow-sm transition-shadow">
                 <div class="w-11 h-11 rounded-xl bg-{{ $card['color'] }}-100 dark:bg-{{ $card['color'] }}-900/40 flex items-center justify-center mb-4 text-{{ $card['color'] }}-600 dark:text-{{ $card['color'] }}-400">
                     @if($card['icon'] === 'building')
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
