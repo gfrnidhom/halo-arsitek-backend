@@ -87,6 +87,7 @@
                                                 <input type="file" wire:model="newLogo" accept="image/*" 
                                                     class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
                                                 <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 250x80px. Max 2MB.</p>
+                                                @error('newLogo') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
                                             </div>
                                         @elseif($key === 'site_logo_dark')
                                             <div class="shrink-0">
@@ -102,6 +103,7 @@
                                                 <input type="file" wire:model="newLogoDark" accept="image/*" 
                                                     class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
                                                 <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 250x80px. Max 2MB.</p>
+                                                @error('newLogoDark') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
                                             </div>
                                         @elseif($key === 'site_favicon')
                                             <div class="shrink-0">
@@ -114,9 +116,10 @@
                                                 @endif
                                             </div>
                                             <div class="flex-1">
-                                                <input type="file" wire:model="newFavicon" accept="image/*" 
+                                                <input type="file" wire:model="newFavicon" accept="image/*, .ico" 
                                                     class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
                                                 <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 32x32px or 64x64px. Max 1MB.</p>
+                                                @error('newFavicon') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
                                             </div>
                                         @endif
                                     </div>
