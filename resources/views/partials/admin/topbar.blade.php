@@ -64,6 +64,15 @@
             Visit Site
         </a>
 
+        {{-- Profile --}}
+        <a
+            href="{{ route('admin.profile') }}"
+            class="p-2 rounded-lg bg-transparent border border-[var(--admin-border)] text-[var(--admin-text-secondary)] hover:text-[var(--admin-primary-text)] hover:bg-[var(--admin-hover-bg)] transition-colors"
+            title="Edit Profile"
+        >
+            <i data-lucide="user" class="w-4 h-4"></i>
+        </a>
+
         {{-- Logout --}}
         <form method="POST" action="{{ route('admin.logout') }}">
             @csrf

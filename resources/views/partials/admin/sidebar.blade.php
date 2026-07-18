@@ -40,6 +40,10 @@
                 <span class="text-[0.6875rem] font-medium text-[var(--admin-sidebar-text-muted)] tracking-wide truncate max-w-[160px]">{{ auth()->user()->email ?? 'Admin Panel' }}</span>
             </div>
         </a>
+        {{-- Close Button (Mobile Only) --}}
+        <button @click="sidebarOpen = false" class="lg:hidden p-2 -mr-2 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
     </div>
 
     {{-- Navigation --}}

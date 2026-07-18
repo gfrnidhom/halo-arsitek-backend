@@ -48,15 +48,20 @@
 <body
     class="font-['Outfit'] antialiased min-h-screen transition-colors duration-300"
     x-data="{ 
+        isMobile: window.innerWidth < 1024,
         sidebarOpen: window.innerWidth >= 1024,
-        sidebarWidth: 260
+        sidebarWidth: 260,
+        handleResize() {
+            this.isMobile = window.innerWidth < 1024;
+            this.sidebarOpen = !this.isMobile;
+        }
     }"
-    x-on:resize.window="sidebarOpen = window.innerWidth >= 1024"
+    @resize.window.debounce.100ms="handleResize()"
 >
     {{-- Sidebar Overlay (mobile) --}}
     <div
-        x-show="sidebarOpen && window.innerWidth < 1024"
-        x-on:click="sidebarOpen = false"
+        x-show="isMobile && sidebarOpen"
+        @click="sidebarOpen = false"
         class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
         x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0"
@@ -73,7 +78,7 @@
 
         {{-- Main Content --}}
         <main class="admin-root flex-1 flex flex-col transition-all duration-300 ease-out min-h-screen overflow-hidden"
-            :style="`margin-left: ${window.innerWidth >= 1024 ? sidebarWidth : 0}px; width: ${window.innerWidth >= 1024 ? 'calc(100% - ' + sidebarWidth + 'px)' : '100%'}`">
+            :style="`margin-left: ${isMobile ? 0 : sidebarWidth}px; width: ${isMobile ? '100%' : 'calc(100% - ' + sidebarWidth + 'px)'}`">
             {{-- Topbar --}}
             @include('partials.admin.topbar')
 
