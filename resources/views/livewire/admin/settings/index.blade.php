@@ -32,7 +32,7 @@
             $grouped = collect($schema)->groupBy('group', true);
         @endphp
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+        <div class="columns-1 lg:columns-2 gap-6 lg:gap-8">
             @foreach($grouped as $groupName => $items)
                 @php
                     $groupIcon = match(strtolower($groupName)) {
@@ -56,7 +56,7 @@
                         default => 'slate'
                     };
                 @endphp
-                <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-3xl p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300">
+                <div class="break-inside-avoid mb-6 lg:mb-8 bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-3xl p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300">
                     <div class="flex items-center gap-3 border-b border-[var(--admin-border)] pb-4 mb-6">
                         <div class="w-10 h-10 rounded-xl bg-{{ $groupColor }}-50 dark:bg-{{ $groupColor }}-900/30 text-{{ $groupColor }}-600 dark:text-{{ $groupColor }}-400 flex items-center justify-center shrink-0">
                             <i data-lucide="{{ $groupIcon }}" class="w-5 h-5"></i>
