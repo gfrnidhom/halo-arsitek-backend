@@ -88,6 +88,21 @@
                                                     class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
                                                 <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 250x80px. Max 2MB.</p>
                                             </div>
+                                        @elseif($key === 'site_logo_dark')
+                                            <div class="shrink-0">
+                                                @if($newLogoDark)
+                                                    <img src="{{ $newLogoDark->temporaryUrl() }}" class="w-16 h-16 object-contain rounded-lg bg-gray-900 border border-[var(--admin-border)] p-1">
+                                                @elseif(!empty($settings[$key]))
+                                                    <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-contain rounded-lg bg-gray-900 border border-[var(--admin-border)] p-1">
+                                                @else
+                                                    <div class="w-16 h-16 rounded-lg bg-gray-900 border border-[var(--admin-border)] flex items-center justify-center text-[var(--admin-text-secondary)]"><i data-lucide="image" class="w-6 h-6"></i></div>
+                                                @endif
+                                            </div>
+                                            <div class="flex-1">
+                                                <input type="file" wire:model="newLogoDark" accept="image/*" 
+                                                    class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
+                                                <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 250x80px. Max 2MB.</p>
+                                            </div>
                                         @elseif($key === 'site_favicon')
                                             <div class="shrink-0">
                                                 @if($newFavicon)

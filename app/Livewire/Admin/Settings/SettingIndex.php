@@ -15,6 +15,7 @@ class SettingIndex extends Component
     public array $settings = [];
     
     public $newLogo;
+    public $newLogoDark;
     public $newFavicon;
 
     public function mount(): void
@@ -28,7 +29,8 @@ class SettingIndex extends Component
             // General
             'site_name' => ['default' => 'Halo Arsitek', 'type' => 'STRING', 'label' => 'Website Name', 'group' => 'General'],
             'site_tagline' => ['default' => 'Jasa Arsitek & Desain Interior Premium', 'type' => 'STRING', 'label' => 'Website Tagline', 'group' => 'General'],
-            'site_logo' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Logo (Optional)', 'group' => 'General'],
+            'site_logo' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Logo (Light Mode)', 'group' => 'General'],
+            'site_logo_dark' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Logo (Dark Mode)', 'group' => 'General'],
             'site_favicon' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Favicon (Optional)', 'group' => 'General'],
             
             // Hero & About (Company)
@@ -78,8 +80,9 @@ class SettingIndex extends Component
     public function save(): void
     {
         $this->validate([
-            'newLogo' => 'nullable|image|max:2048',
-            'newFavicon' => 'nullable|image|max:1024',
+            'newLogo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'newLogoDark' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'newFavicon' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp,ico|max:1024',
         ]);
 
         if ($this->newLogo) {
@@ -88,6 +91,14 @@ class SettingIndex extends Component
             }
             $this->settings['site_logo'] = $this->newLogo->store('settings', 'public');
             $this->newLogo = null;
+        }
+
+        if ($this->newLogoDark) {
+            if (!empty($this->settings['site_logo_dark']) && !str_starts_with($this->settings['site_logo_dark'], 'http')) {
+                Storage::disk('public')->delete($this->settings['site_logo_dark']);
+            }
+            $this->settings['site_logo_dark'] = $this->newLogoDark->store('settings', 'public');
+            $this->newLogoDark = null;
         }
 
         if ($this->newFavicon) {

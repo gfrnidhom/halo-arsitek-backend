@@ -31,10 +31,16 @@
     x-cloak
 >
     {{-- Logo --}}
+    @php
+        $siteLogo = \App\Models\SiteSetting::getValue('site_logo');
+        $siteLogoDark = \App\Models\SiteSetting::getValue('site_logo_dark');
+        $logoUrl = $siteLogo ? (str_starts_with($siteLogo, 'http') ? $siteLogo : Storage::url($siteLogo)) : '/logo/logo-halo-arsitek-black.png';
+        $logoDarkUrl = $siteLogoDark ? (str_starts_with($siteLogoDark, 'http') ? $siteLogoDark : Storage::url($siteLogoDark)) : '/logo/logo-halo-arsitek-white.png';
+    @endphp
     <div class="h-[80px] flex items-center justify-between px-6 border-b border-[var(--admin-border)] shrink-0">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-            <img src="/logo/logo-halo-arsitek-black.png" alt="Halo Arsitek" class="w-9 h-9 object-contain shrink-0 dark:hidden">
-            <img src="/logo/logo-halo-arsitek-white.png" alt="Halo Arsitek" class="w-9 h-9 object-contain shrink-0 hidden dark:block">
+            <img src="{{ $logoUrl }}" alt="Halo Arsitek" class="w-9 h-9 object-contain shrink-0 dark:hidden">
+            <img src="{{ $logoDarkUrl }}" alt="Halo Arsitek" class="w-9 h-9 object-contain shrink-0 hidden dark:block">
             <div class="flex flex-col whitespace-nowrap overflow-hidden transition-all duration-300">
                 <span class="text-[1.125rem] font-bold text-[var(--admin-sidebar-text)] tracking-tight uppercase">HALO ARSITEK</span>
                 <span class="text-[0.6875rem] font-medium text-[var(--admin-sidebar-text-muted)] tracking-wide truncate max-w-[160px]">{{ auth()->user()->email ?? 'Admin Panel' }}</span>
