@@ -12,6 +12,7 @@ class AnalyticsIndex extends Component
     public $topPages = [];
     public $topReferrers = [];
     public $chartData = [];
+    public $deviceStats = [];
 
     public function mount()
     {
@@ -68,6 +69,29 @@ class AnalyticsIndex extends Component
         $this->chartData = [
             'labels' => $dates,
             'data' => $views,
+        ];
+
+        // Device Statistics
+        $allAgents = DB::table('page_views')->whereNotNull('userAgent')->pluck('userAgent');
+        $mobile = 0;
+        $desktop = 0;
+        $tablet = 0;
+
+        foreach ($allAgents as $ua) {
+            $ua = strtolower($ua);
+            if (str_contains($ua, 'tablet') || str_contains($ua, 'ipad') || (str_contains($ua, 'android') && !str_contains($ua, 'mobile'))) {
+                $tablet++;
+            } elseif (str_contains($ua, 'mobile') || str_contains($ua, 'iphone') || str_contains($ua, 'android') || str_contains($ua, 'windows phone')) {
+                $mobile++;
+            } else {
+                $desktop++;
+            }
+        }
+
+        $this->deviceStats = [
+            'desktop' => $desktop,
+            'mobile' => $mobile,
+            'tablet' => $tablet,
         ];
     }
 

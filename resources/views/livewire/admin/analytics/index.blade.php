@@ -1,7 +1,7 @@
 <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
     
     {{-- Top Stats --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {{-- Total Views --}}
         <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
@@ -21,6 +21,32 @@
             <div>
                 <p class="text-xs font-medium text-[var(--admin-text-secondary)] uppercase tracking-wider mb-1">Unique Visitors</p>
                 <h4 class="text-3xl font-bold text-[var(--admin-text-primary)]">{{ number_format($uniqueVisitors) }}</h4>
+            </div>
+        </div>
+
+        {{-- Device Stats --}}
+        <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 flex flex-col justify-center">
+            <p class="text-xs font-medium text-[var(--admin-text-secondary)] uppercase tracking-wider mb-3">Devices Used</p>
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    <span class="text-[var(--admin-text-secondary)]">Mobile</span>
+                </div>
+                <span class="font-semibold text-[var(--admin-text-primary)]">{{ number_format($deviceStats['mobile'] ?? 0) }}</span>
+            </div>
+            <div class="flex items-center justify-between text-sm mt-2">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span class="text-[var(--admin-text-secondary)]">Desktop</span>
+                </div>
+                <span class="font-semibold text-[var(--admin-text-primary)]">{{ number_format($deviceStats['desktop'] ?? 0) }}</span>
+            </div>
+            <div class="flex items-center justify-between text-sm mt-2">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    <span class="text-[var(--admin-text-secondary)]">Tablet</span>
+                </div>
+                <span class="font-semibold text-[var(--admin-text-primary)]">{{ number_format($deviceStats['tablet'] ?? 0) }}</span>
             </div>
         </div>
     </div>
