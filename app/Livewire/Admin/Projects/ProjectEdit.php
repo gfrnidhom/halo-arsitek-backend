@@ -41,7 +41,8 @@ class ProjectEdit extends Component
         $this->area = $project->area;
         $this->description = $project->description;
         $this->cover_image = $project->cover_image;
-        $this->images = $project->images ?? [];
+        $images = is_string($project->images) ? json_decode($project->images, true) : $project->images;
+        $this->images = is_array($images) ? $images : [];
         $this->is_published = $project->is_published;
         $this->is_headliner = $project->is_headliner;
         $this->sort_order = $project->sort_order;

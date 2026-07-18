@@ -10,6 +10,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        /* Trix custom styles for admin theme */
+        trix-toolbar [data-trix-button] { background-color: var(--admin-bg-page); border-color: var(--admin-border); }
+        trix-toolbar [data-trix-button]:hover { background-color: var(--admin-hover-bg); }
+        trix-toolbar [data-trix-button].trix-active { background-color: var(--admin-primary); color: white; }
+        trix-editor { background-color: var(--admin-bg-page); border-color: var(--admin-border) !important; border-radius: 0.75rem; min-height: 250px; }
+        .dark trix-toolbar [data-trix-button] { color: var(--admin-text-primary); }
+        .dark trix-editor { color: var(--admin-text-primary); }
+        .dark trix-editor a { color: var(--admin-primary); }
+    </style>
     @stack('styles')
     
     <!-- Next.js Theme Match Script -->

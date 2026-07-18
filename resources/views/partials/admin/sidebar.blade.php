@@ -16,6 +16,7 @@
             ['label' => 'Team', 'route' => 'admin.team.index', 'icon' => 'users'],
         ],
         'Sistem' => [
+            ['label' => 'Analytics', 'route' => 'admin.analytics.index', 'icon' => 'bar-chart'],
             ['label' => 'Contacts', 'route' => 'admin.contacts.index', 'icon' => 'mail'],
             ['label' => 'Admin Users', 'route' => 'admin.admins.index', 'icon' => 'shield'],
             ['label' => 'Activity Logs', 'route' => 'admin.logs.index', 'icon' => 'activity'],

@@ -19,6 +19,7 @@ use App\Livewire\Admin\Contacts\ContactIndex;
 use App\Livewire\Admin\Settings\SettingIndex;
 use App\Livewire\Admin\Admins\AdminIndex;
 use App\Livewire\Admin\Logs\LogIndex;
+use App\Livewire\Admin\Analytics\AnalyticsIndex;
 use App\Livewire\Admin\Profile\AdminProfile;
 
 // ─── Guest Routes ─────────────────────────────────────────────────────────────
@@ -77,6 +78,9 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
     // Activity Logs
     Route::get('/logs', LogIndex::class)->name('logs.index');
+
+    // Analytics
+    Route::get('/analytics', AnalyticsIndex::class)->name('analytics.index');
 
     // Profile
     Route::get('/profile', AdminProfile::class)->name('profile');
