@@ -24,10 +24,87 @@
                         @error('title') <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> @enderror
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-medium text-[var(--admin-text-secondary)] uppercase tracking-wider mb-2">Icon Name / Code (Optional)</label>
-                        <input wire:model="icon" type="text" placeholder="building, home, pen-tool"
-                            class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)]">
+                    <div x-data="{
+                        open: false,
+                        search: '',
+                        icons: [],
+                        init() {
+                            // Load icons from global lucide object
+                            setTimeout(() => {
+                                if (window.lucide && window.lucide.icons) {
+                                    this.icons = Object.keys(window.lucide.icons).map(name => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase());
+                                }
+                            }, 500);
+                        },
+                        get filteredIcons() {
+                            let res = this.search === '' ? this.icons : this.icons.filter(i => i.includes(this.search.toLowerCase()));
+                            return res.slice(0, 100);
+                        },
+                        selectIcon(iconName) {
+                            $wire.set('icon', iconName);
+                            this.open = false;
+                            this.search = '';
+                        }
+                    }">
+                        <label class="block text-xs font-medium text-[var(--admin-text-secondary)] uppercase tracking-wider mb-2">Icon (Optional)</label>
+                        
+                        {{-- Icon Trigger Button --}}
+                        <div class="flex items-center gap-3">
+                            <button type="button" @click="open = true; setTimeout(() => $refs.searchInput.focus(), 100)" class="w-12 h-12 rounded-xl border border-[var(--admin-border)] flex items-center justify-center bg-[var(--admin-bg-page)] hover:bg-[var(--admin-hover-bg)] transition-colors text-[var(--admin-text-primary)]">
+                                @if($icon)
+                                    <i data-lucide="{{ $icon }}" class="w-6 h-6"></i>
+                                @else
+                                    <svg class="w-6 h-6 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                @endif
+                            </button>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-[var(--admin-text-primary)]">{{ $icon ?: 'No icon selected' }}</p>
+                                <p class="text-xs text-[var(--admin-text-secondary)]">Click the box to search & pick an icon</p>
+                            </div>
+                            @if($icon)
+                                <button type="button" wire:click="$set('icon', '')" class="text-xs text-red-500 hover:underline">Remove</button>
+                            @endif
+                        </div>
+                        @error('icon') <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> @enderror
+
+                        {{-- Icon Picker Modal --}}
+                        <div x-show="open" style="display: none;" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                            <div x-show="open" x-transition.opacity @click="open = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+                            
+                            <div x-show="open" 
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                class="relative bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-xl overflow-hidden"
+                                @click.stop>
+                                
+                                {{-- Header & Search --}}
+                                <div class="p-4 border-b border-[var(--admin-border)] shrink-0 flex items-center gap-3">
+                                    <div class="relative flex-1">
+                                        <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--admin-text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                        <input x-ref="searchInput" x-model="search" type="text" placeholder="Search icons (e.g. home, user, building)..." class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)]">
+                                    </div>
+                                    <button type="button" @click="open = false" class="p-2 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)]">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </div>
+
+                                {{-- Icon Grid --}}
+                                <div class="p-4 overflow-y-auto flex-1 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3 content-start" x-effect="if (open || search) { setTimeout(() => window.lucide.createIcons(), 50) }">
+                                    <template x-for="i in filteredIcons" :key="i">
+                                        <button type="button" @click="selectIcon(i)" class="aspect-square flex flex-col items-center justify-center p-2 rounded-xl border border-[var(--admin-border)] hover:border-[var(--admin-primary)] hover:text-[var(--admin-primary)] hover:bg-[var(--admin-bg-page)] transition-colors group text-[var(--admin-text-secondary)]" :title="i">
+                                            <span class="w-6 h-6 flex items-center justify-center mb-1">
+                                                <i :data-lucide="i"></i>
+                                            </span>
+                                            <span class="text-[9px] w-full truncate text-center opacity-0 group-hover:opacity-100 transition-opacity" x-text="i"></span>
+                                        </button>
+                                    </template>
+                                    <div x-show="filteredIcons.length === 0" class="col-span-full py-12 text-center text-[var(--admin-text-secondary)] text-sm">
+                                        No icons found matching "<span x-text="search"></span>"
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div>
@@ -74,7 +151,10 @@
                             <td class="px-6 py-4">
                                 <p class="text-sm font-medium text-[var(--admin-text-primary)]">{{ $s->title }}</p>
                                 @if($s->icon)
-                                    <p class="text-xs text-[var(--admin-primary-text)]/80 font-mono mt-0.5">icon: {{ $s->icon }}</p>
+                                    <div class="flex items-center gap-1.5 mt-1 text-[var(--admin-primary-text)] opacity-80">
+                                        <i data-lucide="{{ $s->icon }}" class="w-3.5 h-3.5"></i>
+                                        <span class="text-[10px] font-mono">{{ $s->icon }}</span>
+                                    </div>
                                 @endif
                             </td>
                             <td class="px-6 py-4 max-w-md">

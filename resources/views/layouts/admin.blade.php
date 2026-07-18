@@ -22,6 +22,7 @@
         .dark trix-editor { color: var(--admin-text-primary); }
         .dark trix-editor a { color: var(--admin-primary); }
     </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
     @stack('styles')
     
     <!-- Next.js Theme Match Script -->
@@ -84,6 +85,20 @@
     </div>
 
     @livewireScripts
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('morph.updated',  ({ el, component }) => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>
