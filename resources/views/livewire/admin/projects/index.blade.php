@@ -12,23 +12,37 @@
     </div>
 
     {{-- Filters --}}
-    <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-4 mb-6">
+    <div class="mb-6 space-y-3">
         <div class="flex flex-col sm:flex-row gap-3">
-            <div class="flex-1">
+            <div class="w-full">
                 <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search projects..."
-                    class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] placeholder-[var(--admin-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)] focus:border-transparent transition-all">
+                    class="w-full bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] placeholder-[var(--admin-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)] shadow-sm">
             </div>
-            <select wire:model.live="categoryFilter" class="bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)]">
-                <option value="">All Categories</option>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 hide-scrollbar w-full sm:w-auto">
+                <span class="text-[10px] font-semibold text-[var(--admin-text-secondary)] uppercase tracking-wider shrink-0 mr-1">CATEGORY:</span>
+                <button wire:click="$set('categoryFilter', '')" class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all {{ $categoryFilter === '' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    All
+                </button>
                 @foreach($categories as $cat)
-                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                    <button wire:click="$set('categoryFilter', '{{ $cat->id }}')" class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all {{ $categoryFilter == $cat->id ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                        {{ $cat->name }}
+                    </button>
                 @endforeach
-            </select>
-            <select wire:model.live="publishedFilter" class="bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)]">
-                <option value="">All Status</option>
-                <option value="1">Published</option>
-                <option value="0">Draft</option>
-            </select>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 overflow-x-auto pb-1 sm:pb-0 hide-scrollbar w-full sm:w-auto">
+                <span class="text-[10px] font-semibold text-[var(--admin-text-secondary)] uppercase tracking-wider shrink-0 mr-1">STATUS:</span>
+                <button wire:click="$set('publishedFilter', '')" class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all {{ $publishedFilter === '' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    All
+                </button>
+                <button wire:click="$set('publishedFilter', '1')" class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all {{ $publishedFilter === '1' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    Published
+                </button>
+                <button wire:click="$set('publishedFilter', '0')" class="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all {{ $publishedFilter === '0' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    Draft
+                </button>
+            </div>
         </div>
     </div>
 

@@ -7,19 +7,30 @@
     </div>
 
     {{-- Filters --}}
-    <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-4 mb-6">
-        <div class="flex flex-col sm:flex-row gap-3">
-            <div class="flex-1">
+    <div class="mb-6 space-y-3">
+        <div class="flex flex-col gap-3">
+            <div class="w-full">
                 <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search name, email, message..."
-                    class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] placeholder-[var(--admin-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)]">
+                    class="w-full bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] placeholder-[var(--admin-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)] shadow-sm">
             </div>
-            <select wire:model.live="statusFilter" class="bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)]">
-                <option value="">All Status</option>
-                <option value="UNREAD">Unread</option>
-                <option value="READ">Read</option>
-                <option value="REPLIED">Replied</option>
-                <option value="ARCHIVED">Archived</option>
-            </select>
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
+                <span class="text-[10px] font-semibold text-[var(--admin-text-secondary)] uppercase tracking-wider shrink-0 mr-1">STATUS:</span>
+                <button wire:click="$set('statusFilter', '')" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all {{ $statusFilter === '' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    All
+                </button>
+                <button wire:click="$set('statusFilter', 'UNREAD')" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all {{ $statusFilter === 'UNREAD' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    Unread
+                </button>
+                <button wire:click="$set('statusFilter', 'READ')" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all {{ $statusFilter === 'READ' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    Read
+                </button>
+                <button wire:click="$set('statusFilter', 'REPLIED')" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all {{ $statusFilter === 'REPLIED' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    Replied
+                </button>
+                <button wire:click="$set('statusFilter', 'ARCHIVED')" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all {{ $statusFilter === 'ARCHIVED' ? 'bg-[var(--admin-primary)] text-white shadow-md' : 'bg-white dark:bg-slate-800 text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] border border-[var(--admin-border)] shadow-sm' }}">
+                    Archived
+                </button>
+            </div>
         </div>
     </div>
 
