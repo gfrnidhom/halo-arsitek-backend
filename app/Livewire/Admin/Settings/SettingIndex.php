@@ -17,6 +17,7 @@ class SettingIndex extends Component
     public $newLogo;
     public $newLogoDark;
     public $newFavicon;
+    public $newAboutImage;
 
     public function mount(): void
     {
@@ -37,6 +38,7 @@ class SettingIndex extends Component
             'hero_tagline' => ['default' => 'Menciptakan Ruang, Membangun Cerita', 'type' => 'STRING', 'label' => 'Hero Tagline', 'group' => 'Company'],
             'hero_subtitle' => ['default' => 'Studio arsitektur profesional dengan pengalaman 15+ tahun', 'type' => 'STRING', 'label' => 'Hero Subtitle', 'group' => 'Company'],
             'about_description' => ['default' => 'Kami adalah tim arsitek berpengalaman yang berkomitmen menciptakan karya arsitektur yang fungsional, estetik, dan berkelanjutan.', 'type' => 'STRING', 'label' => 'About Description', 'group' => 'Company'],
+            'about_image' => ['default' => '', 'type' => 'IMAGE', 'label' => 'About Image', 'group' => 'Company'],
 
             // Statistics
             'stat_projects' => ['default' => '200', 'type' => 'NUMBER', 'label' => 'Total Projects', 'group' => 'Statistics'],
@@ -83,6 +85,7 @@ class SettingIndex extends Component
             'newLogo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'newLogoDark' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'newFavicon' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp,ico|max:1024',
+            'newAboutImage' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         if ($this->newLogo) {
@@ -107,6 +110,14 @@ class SettingIndex extends Component
             }
             $this->settings['site_favicon'] = $this->newFavicon->store('settings', 'public');
             $this->newFavicon = null;
+        }
+
+        if ($this->newAboutImage) {
+            if (!empty($this->settings['about_image']) && !str_starts_with($this->settings['about_image'], 'http')) {
+                Storage::disk('public')->delete($this->settings['about_image']);
+            }
+            $this->settings['about_image'] = $this->newAboutImage->store('settings', 'public');
+            $this->newAboutImage = null;
         }
 
         $schema = $this->getSettingSchema();

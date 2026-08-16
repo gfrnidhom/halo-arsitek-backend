@@ -85,6 +85,22 @@
                                 <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 32x32px or 64x64px. Max 1MB.</p>
                                 @error('newFavicon') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
                             </div>
+                        @elseif($key === 'about_image')
+                            <div class="shrink-0">
+                                @if($newAboutImage)
+                                    <img src="{{ $newAboutImage->temporaryUrl() }}" class="w-16 h-16 object-cover rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                @elseif(!empty($settings[$key]))
+                                    <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-cover rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                @else
+                                    <div class="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] flex items-center justify-center text-[var(--admin-text-secondary)]"><i data-lucide="image" class="w-6 h-6"></i></div>
+                                @endif
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" wire:model="newAboutImage" accept="image/*" 
+                                    class="block w-full text-sm text-[var(--admin-text-primary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[var(--admin-primary)] file:text-white hover:file:bg-[var(--admin-primary-hover)] transition-all cursor-pointer">
+                                <p class="text-[10px] text-[var(--admin-text-secondary)] mt-1">Recommended size: 1200x800px. Max 2MB.</p>
+                                @error('newAboutImage') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                            </div>
                         @endif
                     </div>
                 @elseif(str_contains(strtolower($key), 'description') || str_contains(strtolower($key), 'address') || str_contains(strtolower($key), 'script'))
