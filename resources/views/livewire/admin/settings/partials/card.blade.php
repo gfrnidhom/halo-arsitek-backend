@@ -40,7 +40,15 @@
                         @if($key === 'site_logo')
                             <div class="shrink-0">
                                 @if($newLogo)
-                                    <img src="{{ $newLogo->temporaryUrl() }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                    @php
+                                        try { $url = $newLogo->temporaryUrl(); $err = null; }
+                                        catch (\Exception $e) { $url = null; $err = $e->getMessage(); }
+                                    @endphp
+                                    @if($url)
+                                        <img src="{{ $url }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                    @else
+                                        <div class="w-16 h-16 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 flex items-center justify-center text-red-500" title="{{ $err }}"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+                                    @endif
                                 @elseif(!empty($settings[$key]))
                                     <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
                                 @else
@@ -56,7 +64,15 @@
                         @elseif($key === 'site_logo_dark')
                             <div class="shrink-0">
                                 @if($newLogoDark)
-                                    <img src="{{ $newLogoDark->temporaryUrl() }}" class="w-16 h-16 object-contain rounded-lg bg-gray-900 border border-[var(--admin-border)] p-1">
+                                    @php
+                                        try { $url = $newLogoDark->temporaryUrl(); $err = null; }
+                                        catch (\Exception $e) { $url = null; $err = $e->getMessage(); }
+                                    @endphp
+                                    @if($url)
+                                        <img src="{{ $url }}" class="w-16 h-16 object-contain rounded-lg bg-gray-900 border border-[var(--admin-border)] p-1">
+                                    @else
+                                        <div class="w-16 h-16 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 flex items-center justify-center text-red-500" title="{{ $err }}"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+                                    @endif
                                 @elseif(!empty($settings[$key]))
                                     <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-contain rounded-lg bg-gray-900 border border-[var(--admin-border)] p-1">
                                 @else
@@ -72,7 +88,15 @@
                         @elseif($key === 'site_favicon')
                             <div class="shrink-0">
                                 @if($newFavicon)
-                                    <img src="{{ $newFavicon->temporaryUrl() }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                    @php
+                                        try { $url = $newFavicon->temporaryUrl(); $err = null; }
+                                        catch (\Exception $e) { $url = null; $err = $e->getMessage(); }
+                                    @endphp
+                                    @if($url)
+                                        <img src="{{ $url }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                    @else
+                                        <div class="w-16 h-16 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 flex items-center justify-center text-red-500" title="{{ $err }}"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+                                    @endif
                                 @elseif(!empty($settings[$key]))
                                     <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
                                 @else
@@ -88,7 +112,15 @@
                         @elseif($key === 'about_image')
                             <div class="shrink-0">
                                 @if($newAboutImage)
-                                    <img src="{{ $newAboutImage->temporaryUrl() }}" class="w-16 h-16 object-cover rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                    @php
+                                        try { $url = $newAboutImage->temporaryUrl(); $err = null; }
+                                        catch (\Exception $e) { $url = null; $err = $e->getMessage(); }
+                                    @endphp
+                                    @if($url)
+                                        <img src="{{ $url }}" class="w-16 h-16 object-cover rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
+                                    @else
+                                        <div class="w-16 h-16 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 flex items-center justify-center text-red-500" title="{{ $err }}"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+                                    @endif
                                 @elseif(!empty($settings[$key]))
                                     <img src="{{ str_starts_with($settings[$key], 'http') ? $settings[$key] : Storage::url($settings[$key]) }}" class="w-16 h-16 object-cover rounded-lg bg-gray-100 dark:bg-gray-800 border border-[var(--admin-border)] p-1">
                                 @else
