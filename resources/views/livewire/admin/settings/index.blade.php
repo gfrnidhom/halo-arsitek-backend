@@ -30,33 +30,25 @@
     <form wire:submit="save" id="settings-form" class="space-y-6">
         @php
             $grouped = collect($schema)->groupBy('group', true);
-            $leftColumn = collect();
-            $rightColumn = collect();
-            
-            $idx = 0;
-            foreach($grouped as $groupName => $items) {
-                if ($idx % 2 === 0) {
-                    $leftColumn->put($groupName, $items);
-                } else {
-                    $rightColumn->put($groupName, $items);
-                }
-                $idx++;
-            }
         @endphp
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-            {{-- Left Column --}}
-            <div class="flex flex-col gap-6 lg:gap-8">
-                @foreach($leftColumn as $groupName => $items)
-                    @include('livewire.admin.settings.partials.card', ['groupName' => $groupName, 'items' => $items])
+        <div class="flex overflow-x-auto border-b border-[var(--admin-border)] pb-px mb-6 hide-scrollbar">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                @foreach($grouped->keys() as $tab)
+                    <button type="button" 
+                            wire:click="$set('activeTab', '{{ $tab }}')"
+                            class="whitespace-nowrap py-3 px-1 border-b-2 font-semibold text-sm transition-colors {{ $activeTab === $tab ? 'border-[var(--admin-primary)] text-[var(--admin-primary)]' : 'border-transparent text-[var(--admin-text-secondary)] hover:text-[var(--admin-text-primary)] hover:border-[var(--admin-border)]' }}">
+                        {{ $tab }}
+                    </button>
                 @endforeach
-            </div>
-            
-            {{-- Right Column --}}
-            <div class="flex flex-col gap-6 lg:gap-8">
-                @foreach($rightColumn as $groupName => $items)
-                    @include('livewire.admin.settings.partials.card', ['groupName' => $groupName, 'items' => $items])
-                @endforeach
+            </nav>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 lg:gap-8 items-start">
+            <div class="col-span-1 w-full max-w-4xl">
+                @if($grouped->has($activeTab))
+                    @include('livewire.admin.settings.partials.card', ['groupName' => $activeTab, 'items' => $grouped->get($activeTab)])
+                @endif
             </div>
         </div>
     </form>

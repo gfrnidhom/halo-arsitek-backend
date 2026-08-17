@@ -6,11 +6,15 @@ use App\Models\SiteSetting;
 use App\Models\ActivityLog;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\Storage;
 
 class SettingIndex extends Component
 {
     use WithFileUploads;
+
+    #[Url(history: true)]
+    public string $activeTab = 'General';
 
     public array $settings = [];
     
