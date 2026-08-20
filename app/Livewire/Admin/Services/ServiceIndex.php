@@ -22,6 +22,19 @@ class ServiceIndex extends Component
     public bool $showDeleteModal = false;
     public ?string $deleteId = null;
 
+    public array $selectedIds = [];
+    public bool $selectAll = false;
+    public bool $showBulkDeleteModal = false;
+
+    public function updatedSelectAll($value): void
+    {
+        if ($value) {
+            $this->selectedIds = Service::pluck('id')->toArray();
+        } else {
+            $this->selectedIds = [];
+        }
+    }
+
     protected function rules(): array
     {
         return [
@@ -97,6 +110,25 @@ class ServiceIndex extends Component
         }
         $this->showDeleteModal = false;
         $this->deleteId = null;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+        $this->showBulkDeleteModal = true;
+    }
+
+    public function bulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+
+        $count = count($this->selectedIds);
+        Service::whereIn('id', $this->selectedIds)->delete();
+        ActivityLog::logActivity('BULK_DELETED_SERVICES', "Bulk deleted {$count} services", auth()->user(), request()->ip());
+
+        $this->selectedIds = [];
+        $this->selectAll = false;
+        $this->showBulkDeleteModal = false;
     }
 
     public function resetForm(): void

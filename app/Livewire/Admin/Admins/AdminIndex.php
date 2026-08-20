@@ -23,6 +23,19 @@ class AdminIndex extends Component
     public bool $showDeleteModal = false;
     public ?string $deleteId = null;
 
+    public array $selectedIds = [];
+    public bool $selectAll = false;
+    public bool $showBulkDeleteModal = false;
+
+    public function updatedSelectAll($value): void
+    {
+        if ($value) {
+            $this->selectedIds = Admin::pluck('id')->toArray();
+        } else {
+            $this->selectedIds = [];
+        }
+    }
+
     protected function rules(): array
     {
         $unique = $this->editId ? '|unique:admins,email,' . $this->editId : '|unique:admins,email';
@@ -102,6 +115,30 @@ class AdminIndex extends Component
         }
         $this->showDeleteModal = false;
         $this->deleteId = null;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+        $this->showBulkDeleteModal = true;
+    }
+
+    public function bulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+
+        // Ensure user cannot delete themselves
+        $idsToDelete = array_filter($this->selectedIds, fn($id) => $id !== auth()->id());
+        
+        $count = count($idsToDelete);
+        if ($count > 0) {
+            Admin::whereIn('id', $idsToDelete)->delete();
+            ActivityLog::logActivity('BULK_DELETED_ADMINS', "Bulk deleted {$count} admin accounts", auth()->user(), request()->ip());
+        }
+
+        $this->selectedIds = [];
+        $this->selectAll = false;
+        $this->showBulkDeleteModal = false;
     }
 
     public function resetForm(): void

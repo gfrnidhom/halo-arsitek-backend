@@ -17,6 +17,19 @@ class NewsCategoryIndex extends Component
     public bool $showDeleteModal = false;
     public ?string $deleteId = null;
 
+    public array $selectedIds = [];
+    public bool $selectAll = false;
+    public bool $showBulkDeleteModal = false;
+
+    public function updatedSelectAll($value): void
+    {
+        if ($value) {
+            $this->selectedIds = NewsCategory::pluck('id')->toArray();
+        } else {
+            $this->selectedIds = [];
+        }
+    }
+
     protected function rules(): array
     {
         $unique = $this->editId ? '|unique:news_categories,slug,' . $this->editId : '|unique:news_categories,slug';
@@ -86,6 +99,40 @@ class NewsCategoryIndex extends Component
         }
         $this->showDeleteModal = false;
         $this->deleteId = null;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+        $this->showBulkDeleteModal = true;
+    }
+
+    public function bulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+
+        // Filter out categories that have articles
+        $categoriesToDelete = NewsCategory::withCount('news')->whereIn('id', $this->selectedIds)->get();
+        $deletedCount = 0;
+        
+        foreach ($categoriesToDelete as $cat) {
+            if ($cat->news_count === 0) {
+                $cat->delete();
+                $deletedCount++;
+            }
+        }
+
+        if ($deletedCount > 0) {
+            ActivityLog::logActivity('BULK_DELETED_NEWS_CATEGORIES', "Bulk deleted {$deletedCount} news categories", auth()->user(), request()->ip());
+        }
+        
+        if ($deletedCount < count($this->selectedIds)) {
+            session()->flash('error', 'Some categories could not be deleted because they contain articles.');
+        }
+
+        $this->selectedIds = [];
+        $this->selectAll = false;
+        $this->showBulkDeleteModal = false;
     }
 
     public function resetForm(): void

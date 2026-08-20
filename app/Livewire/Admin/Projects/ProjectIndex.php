@@ -23,6 +23,19 @@ class ProjectIndex extends Component
     public ?string $deleteId = null;
     public string $deleteTitle = '';
 
+    public array $selectedIds = [];
+    public bool $selectAll = false;
+    public bool $showBulkDeleteModal = false;
+
+    public function updatedSelectAll($value): void
+    {
+        if ($value) {
+            $this->selectedIds = Project::pluck('id')->toArray();
+        } else {
+            $this->selectedIds = [];
+        }
+    }
+
     protected $queryString = [
         'search' => ['except' => ''],
         'categoryFilter' => ['except' => ''],
@@ -88,6 +101,25 @@ class ProjectIndex extends Component
         $this->showDeleteModal = false;
         $this->deleteId = null;
         $this->deleteTitle = '';
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+        $this->showBulkDeleteModal = true;
+    }
+
+    public function bulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+
+        $count = count($this->selectedIds);
+        Project::whereIn('id', $this->selectedIds)->delete();
+        ActivityLog::logActivity('BULK_DELETED_PROJECTS', "Bulk deleted {$count} projects", auth()->user(), request()->ip());
+
+        $this->selectedIds = [];
+        $this->selectAll = false;
+        $this->showBulkDeleteModal = false;
     }
 
     public function render()

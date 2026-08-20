@@ -4,6 +4,14 @@
             <h2 class="text-lg font-semibold text-[var(--admin-text-primary)]">Client Inquiries</h2>
             <p class="text-xs text-[var(--admin-text-secondary)] mt-0.5">{{ $submissions->total() }} total submissions ({{ $unreadCount }} unread)</p>
         </div>
+        <div class="flex items-center gap-2">
+            @if(count($selectedIds) > 0)
+                <button wire:click="confirmBulkDelete" class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 hover:bg-red-200 dark:hover:bg-red-900/50 text-sm font-semibold rounded-xl transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    Delete Selected ({{ count($selectedIds) }})
+                </button>
+            @endif
+        </div>
     </div>
 
     {{-- Filters --}}
@@ -40,6 +48,9 @@
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-[var(--admin-border)]">
+                        <th class="w-12 text-center px-4 py-3.5">
+                            <input wire:model.live="selectAll" type="checkbox" class="w-4 h-4 rounded border-[var(--admin-border)] bg-[var(--admin-bg-page)] text-[var(--admin-primary)] cursor-pointer">
+                        </th>
                         <th class="text-left px-6 py-3.5 text-[11px] text-[var(--admin-text-secondary)] uppercase tracking-wider font-medium">Sender</th>
                         <th class="text-left px-6 py-3.5 text-[11px] text-[var(--admin-text-secondary)] uppercase tracking-wider font-medium">Message Snippet</th>
                         <th class="text-left px-6 py-3.5 text-[11px] text-[var(--admin-text-secondary)] uppercase tracking-wider font-medium hidden md:table-cell">Budget</th>
@@ -49,7 +60,10 @@
                 </thead>
                 <tbody class="divide-y divide-[var(--admin-border)]">
                     @forelse($submissions as $sub)
-                        <tr wire:click="viewDetail('{{ $sub->id }}')" class="hover:bg-[var(--admin-hover-bg)] transition-colors cursor-pointer {{ $sub->status === 'UNREAD' ? 'bg-[var(--admin-primary)]/[0.03] font-medium' : '' }}">
+                        <tr wire:click="viewDetail('{{ $sub->id }}')" class="hover:bg-[var(--admin-hover-bg)] transition-colors cursor-pointer {{ $sub->status === 'UNREAD' ? 'bg-[var(--admin-primary)]/[0.03] font-medium' : '' }}" wire:key="contact-{{ $sub->id }}">
+                            <td class="px-4 py-4 text-center" wire:click.stop>
+                                <input wire:model.live="selectedIds" value="{{ $sub->id }}" type="checkbox" class="w-4 h-4 rounded border-[var(--admin-border)] bg-[var(--admin-bg-page)] text-[var(--admin-primary)] cursor-pointer">
+                            </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-2">
                                     @if($sub->status === 'UNREAD')
@@ -136,6 +150,19 @@
                 <div class="flex gap-3">
                     <button wire:click="$set('showDeleteModal', false)" class="flex-1 px-4 py-2.5 bg-transparent border border-[var(--admin-border)] rounded-xl text-sm text-[var(--admin-text-primary)]">Cancel</button>
                     <button wire:click="delete" class="flex-1 px-4 py-2.5 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 rounded-xl text-sm text-red-600 dark:text-red-400 font-semibold">Delete</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($showBulkDeleteModal)
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-[var(--admin-bg-card)] border border-[var(--admin-border)] rounded-2xl p-6 max-w-sm w-full shadow-sm">
+                <h3 class="text-lg font-semibold text-[var(--admin-text-primary)] mb-2">Bulk Delete</h3>
+                <p class="text-sm text-[var(--admin-text-secondary)] mb-6">Are you sure you want to delete {{ count($selectedIds) }} selected message(s)?</p>
+                <div class="flex gap-3">
+                    <button wire:click="$set('showBulkDeleteModal', false)" class="flex-1 px-4 py-2.5 bg-transparent border border-[var(--admin-border)] rounded-xl text-sm text-[var(--admin-text-primary)]">Cancel</button>
+                    <button wire:click="bulkDelete" class="flex-1 px-4 py-2.5 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 rounded-xl text-sm text-red-600 dark:text-red-400 font-semibold">Delete All</button>
                 </div>
             </div>
         </div>

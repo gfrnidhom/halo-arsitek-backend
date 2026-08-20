@@ -19,6 +19,19 @@ class ContactIndex extends Component
     public bool $showDeleteModal = false;
     public ?string $deleteId = null;
 
+    public array $selectedIds = [];
+    public bool $selectAll = false;
+    public bool $showBulkDeleteModal = false;
+
+    public function updatedSelectAll($value): void
+    {
+        if ($value) {
+            $this->selectedIds = ContactSubmission::pluck('id')->toArray();
+        } else {
+            $this->selectedIds = [];
+        }
+    }
+
     protected $queryString = ['search' => ['except' => ''], 'statusFilter' => ['except' => '']];
 
     public function updatingSearch(): void { $this->resetPage(); }
@@ -57,6 +70,25 @@ class ContactIndex extends Component
         $this->showDeleteModal = false;
         $this->deleteId = null;
         $this->showDetailModal = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+        $this->showBulkDeleteModal = true;
+    }
+
+    public function bulkDelete(): void
+    {
+        if (empty($this->selectedIds)) return;
+
+        $count = count($this->selectedIds);
+        ContactSubmission::whereIn('id', $this->selectedIds)->delete();
+        ActivityLog::logActivity('BULK_DELETED_CONTACTS', "Bulk deleted {$count} contact submissions", auth()->user(), request()->ip());
+
+        $this->selectedIds = [];
+        $this->selectAll = false;
+        $this->showBulkDeleteModal = false;
     }
 
     public function render()
