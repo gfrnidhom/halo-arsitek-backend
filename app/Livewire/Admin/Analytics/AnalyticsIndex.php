@@ -72,7 +72,7 @@ class AnalyticsIndex extends Component
         ];
 
         // Device Statistics
-        $allAgents = DB::table('page_views')->whereNotNull('userAgent')->pluck('userAgent');
+        $allAgents = DB::table('page_views')->whereNotNull('user_agent')->pluck('user_agent');
         $mobile = 0;
         $desktop = 0;
         $tablet = 0;
