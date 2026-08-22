@@ -14,6 +14,7 @@ class TeamMember extends Model
     protected $fillable = [
         'name',
         'role',
+        'bio',
         'image',
         'is_published',
         'sort_order',

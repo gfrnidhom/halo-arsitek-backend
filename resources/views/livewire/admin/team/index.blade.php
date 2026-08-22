@@ -39,6 +39,13 @@
                     </div>
 
                     <div>
+                        <label class="block text-xs font-medium text-[var(--admin-text-secondary)] uppercase tracking-wider mb-2">Bio / Description</label>
+                        <textarea wire:model="bio" placeholder="Short bio or description..." rows="3"
+                            class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--admin-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)] resize-none"></textarea>
+                        @error('bio') <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-medium text-[var(--admin-text-secondary)] uppercase tracking-wider mb-2">Photo</label>
                         <div class="flex items-center gap-3">
                             @if($image)

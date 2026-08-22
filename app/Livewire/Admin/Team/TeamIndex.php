@@ -14,6 +14,7 @@ class TeamIndex extends Component
 
     public string $name = '';
     public string $role = '';
+    public string $bio = '';
     public $image_file = null;
     public string $image = '';
     public bool $is_published = true;
@@ -42,6 +43,7 @@ class TeamIndex extends Component
         return [
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'bio' => 'nullable|string',
             'image' => 'nullable|string|max:500',
             'is_published' => 'boolean',
             'sort_order' => 'integer',
@@ -67,6 +69,7 @@ class TeamIndex extends Component
         $this->editId = $tm->id;
         $this->name = $tm->name;
         $this->role = $tm->role;
+        $this->bio = $tm->bio ?? '';
         $this->image = $tm->image ?? '';
         $this->is_published = $tm->is_published;
         $this->sort_order = $tm->sort_order;
@@ -80,6 +83,7 @@ class TeamIndex extends Component
         $data = [
             'name' => $this->name,
             'role' => $this->role,
+            'bio' => $this->bio,
             'image' => $this->image ?: null,
             'is_published' => $this->is_published,
             'sort_order' => $this->sort_order,
@@ -144,6 +148,7 @@ class TeamIndex extends Component
     {
         $this->name = '';
         $this->role = '';
+        $this->bio = '';
         $this->image_file = null;
         $this->image = '';
         $this->is_published = true;
