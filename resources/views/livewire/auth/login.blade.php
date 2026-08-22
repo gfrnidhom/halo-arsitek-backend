@@ -23,7 +23,6 @@
                         type="email"
                         id="email"
                         autocomplete="email"
-                        placeholder="admin@haloarsitek.com"
                         class="w-full bg-[var(--admin-bg-page)] border border-[var(--admin-border)] rounded-xl px-4 py-3 text-[var(--admin-text-primary)] placeholder-[var(--admin-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-primary)] focus:border-transparent transition-all text-sm"
                     >
                     @error('email')
