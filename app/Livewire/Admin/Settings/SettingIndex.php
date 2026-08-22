@@ -38,11 +38,11 @@ class SettingIndex extends Component
             'site_logo_dark' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Logo (Dark Mode)', 'group' => 'General'],
             'site_favicon' => ['default' => '', 'type' => 'IMAGE', 'label' => 'Favicon (Optional)', 'group' => 'General'],
             
-            // Hero & About (Company)
-            'hero_tagline' => ['default' => 'Menciptakan Ruang, Membangun Cerita', 'type' => 'STRING', 'label' => 'Hero Tagline', 'group' => 'Company'],
-            'hero_subtitle' => ['default' => 'Studio arsitektur profesional dengan pengalaman 15+ tahun', 'type' => 'STRING', 'label' => 'Hero Subtitle', 'group' => 'Company'],
-            'about_description' => ['default' => 'Kami adalah tim arsitek berpengalaman yang berkomitmen menciptakan karya arsitektur yang fungsional, estetik, dan berkelanjutan.', 'type' => 'STRING', 'label' => 'About Description', 'group' => 'Company'],
-            'about_image' => ['default' => '', 'type' => 'IMAGE', 'label' => 'About Image', 'group' => 'Company'],
+            // Hero & About (About Us)
+            'hero_tagline' => ['default' => 'Menciptakan Ruang, Membangun Cerita', 'type' => 'STRING', 'label' => 'Hero Tagline', 'group' => 'About Us'],
+            'hero_subtitle' => ['default' => 'Studio arsitektur profesional dengan pengalaman 15+ tahun', 'type' => 'STRING', 'label' => 'Hero Subtitle', 'group' => 'About Us'],
+            'about_description' => ['default' => 'Kami adalah tim arsitek berpengalaman yang berkomitmen menciptakan karya arsitektur yang fungsional, estetik, dan berkelanjutan.', 'type' => 'STRING', 'label' => 'About Description', 'group' => 'About Us'],
+            'about_image' => ['default' => '', 'type' => 'IMAGE', 'label' => 'About Image', 'group' => 'About Us'],
 
             // Statistics
             'stat_projects' => ['default' => '200', 'type' => 'NUMBER', 'label' => 'Total Projects', 'group' => 'Statistics'],

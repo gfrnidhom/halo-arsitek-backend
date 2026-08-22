@@ -5,6 +5,7 @@
         'social media' => 'share-2',
         'social' => 'share-2',
         'contact' => 'map-pin',
+        'about us' => 'building-2',
         'company' => 'building-2',
         'statistics' => 'bar-chart-2',
         default => 'settings-2'
@@ -15,6 +16,7 @@
         'social media' => 'pink',
         'social' => 'pink',
         'contact' => 'emerald',
+        'about us' => 'amber',
         'company' => 'amber',
         'statistics' => 'indigo',
         default => 'slate'
