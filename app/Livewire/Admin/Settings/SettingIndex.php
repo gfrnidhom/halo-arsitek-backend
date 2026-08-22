@@ -42,6 +42,8 @@ class SettingIndex extends Component
             'hero_tagline' => ['default' => 'Menciptakan Ruang, Membangun Cerita', 'type' => 'STRING', 'label' => 'Hero Tagline', 'group' => 'About Us'],
             'hero_subtitle' => ['default' => 'Studio arsitektur profesional dengan pengalaman 15+ tahun', 'type' => 'STRING', 'label' => 'Hero Subtitle', 'group' => 'About Us'],
             'about_description' => ['default' => 'Kami adalah tim arsitek berpengalaman yang berkomitmen menciptakan karya arsitektur yang fungsional, estetik, dan berkelanjutan.', 'type' => 'STRING', 'label' => 'About Description', 'group' => 'About Us'],
+            'about_vision' => ['default' => '', 'type' => 'STRING', 'label' => 'About Vision', 'group' => 'About Us'],
+            'about_philosophy' => ['default' => '', 'type' => 'STRING', 'label' => 'About Philosophy', 'group' => 'About Us'],
             'about_image' => ['default' => '', 'type' => 'IMAGE', 'label' => 'About Image', 'group' => 'About Us'],
 
             // Statistics
